@@ -56,4 +56,3 @@ observe(obj);
 
 // obj.zzz
 
-//aaa
