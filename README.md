@@ -1,4 +1,4 @@
-# vue_component
+# 手写简易版Vue全家桶Mini-Vue
 
 ## Project setup
 ```
