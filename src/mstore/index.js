@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex from './mvuex'
 
 Vue.use(Vuex)
 
@@ -13,14 +13,15 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    addCount(state) {
-      state.count++
+    addCount(state, payload) {
+      state.count += payload
     }
   },
   actions: {
-    add({ commit }) {
+    //解构上下文
+    add({ commit }, payload) {
       setTimeout(() => {
-        commit('addCount')
+        commit('addCount', payload)
       }, 1000)
     }
 
