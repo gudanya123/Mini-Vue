@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const obj = {}
+
+        function defineReactive(obj, key, val) {
+            //对传入obj进行访问拦截
+            Object.defineProperty(obj, key, {
+                get() {
+                    return val;
+                },
+                set(newVal) {
+                    if (newVal !== val) {
+                        val = newVal
+                        //更新函数
+                        update()
+                    }
+
+                }
+            })
+        }
+
+        function update(){
+            app.innerText = obj.age
+        }
+
+
+        defineReactive(obj, 'age', 18)  
+        
+        setInterval(()=>{
+            obj.age += 1 
+            update()
+        },1000)
+
+
+    </script>
+
+</body>
+
+</html>
