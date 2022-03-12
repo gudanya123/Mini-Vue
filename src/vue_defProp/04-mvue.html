@@ -10,14 +10,20 @@
 
 <body>
     <div id="app">
+        <!-- 插值 -->
         <p>{{counter}}</p>
+        <!-- 指令 -->
+        <p m-text="counter"></p>
+        <p m-html="desc"></p>
     </div>
     <script src="./mvue.js"></script>
+    <script src="./compile.js"></script>
     <script>
         const app = new MVue({
             el: '#app',
             data: {
-                counter: 1
+                counter: 1,
+                desc: '<h1 style="color: red">HTML</h1>'
             },
         })
         setInterval(() => {
