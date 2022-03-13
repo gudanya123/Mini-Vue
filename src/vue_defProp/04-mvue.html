@@ -11,24 +11,31 @@
 <body>
     <div id="app">
         <!-- 插值 -->
-        <p>{{counter}}</p>
+        <p @click="add">{{counter}}</p>
         <!-- 指令 -->
         <p m-text="counter"></p>
         <p m-html="desc"></p>
+        <input type="text" m-model="desc">
     </div>
-    <script src="./mvue.js"></script>
-    <script src="./compile.js"></script>
+    <script src="compile.js"></script>
+    <script src="mvue.js"></script>
     <script>
         const app = new MVue({
             el: '#app',
             data: {
                 counter: 1,
-                desc: '<h1 style="color: red">HTML</h1>'
+                desc: '<h1 style="color: red">MVue</h1>'
+            },
+            methods: {
+                add() {
+                    this.counter++
+
+                }
             },
         })
-        setInterval(() => {
-            app.counter++
-        }, 1000);
+        // setInterval(() => {
+        //     app.counter++
+        // }, 1000);
     </script>
 </body>
 
