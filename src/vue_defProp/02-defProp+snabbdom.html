@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用snabbdom实现更新操作</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="/node_modules/snabbdom/dist/snabbdom.js"></script>
+    <script src="/node_modules/snabbdom/dist/snabbdom-style.js"></script>
+    <script>
+        const obj = {}
+        const { init, h } = snabbdom;
+
+        //1.获取patch函数,对比两个虚拟dom,然后执行dom操作
+        const patch = init([
+            snabbdom_style.default
+        ])
+
+        let vnode;  //保存之前旧的虚拟dom
+
+        function defineReactive(obj, key, val) {
+            //对传入obj进行访问拦截
+            Object.defineProperty(obj, key, {
+                get() {
+                    return val;
+                },
+                set(newVal) {
+                    if (newVal !== val) {
+                        val = newVal
+                        //更新函数
+                        update()
+                    }
+
+                }
+            })
+        }
+
+        //使用虚拟dom做更新
+        function update() {
+            vnode = patch(vnode, h('div#app', { style: { color: 'red' } }, obj.age))
+        }
+
+
+        defineReactive(obj, 'age', 18)
+
+        //执行初始化
+        vnode = patch(app, h('div#app', obj.age))
+        console.log(vnode);
+
+        setInterval(() => {
+            obj.age += 1
+        }, 1000)
+
+
+    </script>
+
+</body>
+
+</html>
