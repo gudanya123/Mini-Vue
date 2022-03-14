@@ -1,22 +1,19 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import router from './router'
-import router from './mrouter '
-// import store from './store'
-import store from './mstore'
-import create from './utils/create'
 
+import { createRouter } from './router/index';
 
-//插件注册
-Vue.use(create)
+// 返回工厂函数，每次请求创建一个Vue实例
+export function createApp(context) {
+  // 1.创建路由器实例
+  const router = createRouter()
 
-Vue.config.productionTip = false
-
-//事件总线
-// Vue.prototype.$create = create 
-
-new Vue({
-  router,   //挂载router实例, Vue.prototype.$router = router
-  store,
-  render: h => h(App)
-}).$mount('#app')
+  // 2.创建Vue实例
+  const app = new Vue({
+    router,
+    context, // 上下文用于给渲染器传递参数
+    render: h => h(App)
+  })
+  
+  return {app, router}
+}
