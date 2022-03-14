@@ -1,30 +1,32 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-    count: 0
-  },
-  getters: {
-    getDoubleCount(state) {
-      return state.count * 2
-    }
-  },
-  mutations: {
-    addCount(state) {
-      state.count++
-    }
-  },
-  actions: {
-    add({ commit }) {
-      setTimeout(() => {
-        commit('addCount')
-      }, 1000)
-    }
-
-  },
-  modules: {
-  }
-})
+//store工厂,给每一个用户请求创建独立的状态管理
+export function createStore() {
+  return new Vuex.Store({
+    state: {
+      count: 108
+    },
+    mutations: {
+      add(state) {
+        state.count += 1;
+      },
+      // 加一个初始化 
+      init(state, count) {
+        state.count = count;
+      },
+    },
+    actions: {
+      // 加一个异步请求count的action 
+      getCount({ commit }) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            commit("init", Math.random() * 100);
+            resolve();
+          }, 1000);
+        });
+      },
+    },
+  })
+}
