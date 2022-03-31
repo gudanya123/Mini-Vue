@@ -22,7 +22,8 @@
     <p @click="$store.dispatch('add', 2)">
       async count: {{ $store.state.count }}
     </p>
-    <!-- <p>double count: {{ $store.getters.getDoubleCount}}</p> -->
+    <p>double count: {{ $store.getters.getDoubleCount}}</p>
+    <router-view></router-view>
   </div>
 </template>
 <script>

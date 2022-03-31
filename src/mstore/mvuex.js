@@ -7,16 +7,39 @@ class Store {
         //保存用户编写的actions选项
         this._actions = options.actions;
 
+        this._wrappedGetters = options.getters;
+
         //响应化处理state
         // this.state = new Vue({
         //     data: options.state
         // })
 
+        //定义computed选项
+        const computed = {}
+        this.getters = {}
+
+        const store = this;
+
+        Object.keys(this._wrappedGetters).forEach(key => {
+            //获取用户定义的getter
+            const fn = store._wrappedGetters[key];
+            //转换为computed可以使用无参数形式
+            computed[key] = function () {
+                return fn(store.state)
+            }
+
+            //为getters定义只读属性
+            Object.defineProperty(store.getters, key, {
+                get: () => store._vm[key]
+            })
+        })
+
         this._vm = new Vue({
             data: {
                 //加两个$,Vue不做代理
                 $$state: options.state
-            }
+            },
+            computed
         })
 
         //绑定commit、dispatch的上下文为store实例
@@ -25,7 +48,6 @@ class Store {
 
         // 绑定commit上下文否则action中调用commit时可能出问题!!
         // 同时也把action绑了，因为action可以互调
-        const store = this
         const { commit, action } = store
         this.commit = function boundCommit(type, payload) {
             commit.call(store, type, payload)

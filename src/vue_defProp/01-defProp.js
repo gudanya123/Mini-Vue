@@ -8,10 +8,10 @@
 const orginalProto = Array.prototype;
 //备份一份,修改备份
 const arrayProto = Object.create(orginalProto);
-['push','pop','shift','unshift'].forEach(method=>{
-    arrayProto[method] = function(){
+['push', 'pop', 'shift', 'unshift'].forEach(method => {
+    arrayProto[method] = function () {
         //原始操作
-        orginalProto[method].apply(this,arguments)
+        orginalProto[method].apply(this, arguments)
         //覆盖操作: 通知更新
         console.log('数组执行' + method + '操作');
     }
@@ -49,18 +49,18 @@ function observe(obj) {
     }
 
     //判断传入obj类型
-    if(Array.isArray(obj)){
+    if (Array.isArray(obj)) {
         //覆盖原型,替换7个变更操作
-        obj.__proto__=arrayProto
+        obj.__proto__ = arrayProto
         //对数组内部元素执行响应化
         for (let i = 0; i < obj.length; i++) {
             observe(obj[i])
         }
-    }else{
-    //遍历做响应式处理
-    Object.keys(obj).forEach(key => {
-        defineReactive(obj, key, obj[key])
-    })
+    } else {
+        //遍历做响应式处理
+        Object.keys(obj).forEach(key => {
+            defineReactive(obj, key, obj[key])
+        })
     }
 }
 
@@ -90,12 +90,12 @@ obj.arr.push(4)
 
 for (const key in obj) {
     if (Object.hasOwnProperty.call(obj, key)) {
-      const ele = obj[key];
-      console.log(ele)
-      
+        const ele = obj[key];
+        console.log(ele)
+
     }
-  }
-  
+}
+
 
 
 

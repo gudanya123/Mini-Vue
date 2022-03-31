@@ -11,8 +11,12 @@
 <script>
 //Async-validator  element-ui校验的规则描述
 import Schema from "async-validator";
+import emitter from "@/mixins/emitter";
 export default {
   inject: ["form"],
+  mixins: [emitter],
+  name: "MFormItem",
+  componentName: "MFormItem",
   props: {
     label: {
       type: String,
@@ -31,6 +35,10 @@ export default {
     this.$on("validate", () => {
       this.validate();
     });
+    //派发事件通知MForm,新增一个MFormItem实例
+    if (this.prop) {
+      this.dispatch("MForm", "my.form.addField", [this]);
+    }
   },
   methods: {
     validate() {
