@@ -24,14 +24,20 @@
             el: '#app',
             data: {
                 counter: 1,
-                desc: '<h1 style="color: red">MVue</h1>'
+                desc: '<h1 style="color: red">MVue</h1>',
+                arr: [1],
             },
             methods: {
                 add() {
                     this.counter++
+                    this.arr.push(this.counter);
+                    console.log(this.arr);
+                    this.arr.splice(0,1,10);
+                    console.log(this.arr);
+
 
                 }
-            },
+            }
         })
         // setInterval(() => {
         //     app.counter++

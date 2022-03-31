@@ -76,9 +76,11 @@ class MVue {
 class Observer {
     constructor(value) {
         this.value = value
-
-        // 判断其类型
-        if (typeof value === 'object') {
+        //判断传入value类型
+        if (Array.isArray(value)) {
+            this.walkArray(value)
+        } else {
+            //遍历做响应式处理
             this.walk(value)
         }
     }
@@ -90,7 +92,28 @@ class Observer {
         })
     }
 
-    // 数组数据响应化，待补充
+    // 数组数据响应化
+    walkArray(obj) {
+        //数组响应式
+        //替换数组原型中7个方法
+        const orginalProto = Array.prototype;
+        //备份一份,修改备份
+        const arrayProto = Object.create(orginalProto);
+        ['push', 'pop', 'shift', 'unshift', 'reverse', 'sort', 'splice'].forEach(method => {
+            arrayProto[method] = function () {
+                //原始操作
+                orginalProto[method].apply(this, arguments)
+                //覆盖操作: 通知更新
+                console.log('数组执行' + method)
+            }
+        })
+        //覆盖原型,替换7个变更操作
+        obj.__proto__ = arrayProto
+        //对数组内部元素执行响应化
+        for (let i = 0; i < obj.length; i++) {
+            observe(obj[i])
+        }
+    }
 }
 
 // 观察者:保存更新函数，值发生变化调用更新函数
